@@ -2,54 +2,55 @@ package ba.unsa.etf.rpr;
 
 import java.io.*;
 import java.util.ArrayList;
-import java.util.Scanner;
 
 public class XMLToCSV {
-    public static void transform() throws IOException {     //removes test classes from csv and adds new metrics from xml
-        XMLReader reader = new XMLReader();
+    public void transform() {     //removes test classes from csv and adds new metrics from xml
+        try {
+            XMLReader reader = new XMLReader();
+            File oldFile = new File("C:\\Users\\selma\\OneDrive\\Desktop\\classNovi.csv");
 
-        File oldFile = new File("C:\\Users\\selma\\OneDrive\\Desktop\\classNovi.csv");
-
-        if (!oldFile.isFile()) {
-            System.out.println("Parameter is not an existing file");
-            return;
-        }
-
-        File tempFile = new File(oldFile.getAbsolutePath() + ".tmp");
-
-        BufferedReader br = new BufferedReader(new FileReader(oldFile));
-        PrintWriter pw = new PrintWriter(new FileWriter(tempFile));
-
-        String line;
-        int i = 0;
-        while ((line = br.readLine()) != null) {
-
-            if (!line.trim().contains("\\test\\") && !line.trim().contains("enum")) {
-                if(i == 0) {
-                    line += ",mhf,mif,ahf,aif,nmi,noch,six";
-                }
-                else {
-                    line += "," + getMetricForClassCSVFormat(line.split(",")[1], reader);
-                }
-                pw.println(line);
-                pw.flush();
-                i++;
+            if (!oldFile.isFile()) {
+                System.out.println("Parameter is not an existing file");
+                return;
             }
+
+            File tempFile = new File(oldFile.getAbsolutePath() + ".tmp");
+
+            BufferedReader br = new BufferedReader(new FileReader(oldFile));
+            PrintWriter pw = new PrintWriter(new FileWriter(tempFile));
+
+            String line;
+            int i = 0;
+            while ((line = br.readLine()) != null) {
+
+                if (!line.trim().contains("\\test\\") && !line.trim().contains("enum")) {
+                    if (i == 0) {
+                        line += ",mhf,mif,ahf,aif,nmi,noch,six";
+                    } else {
+                        line += "," + getMetricForClassCSVFormat(line.split(",")[1], reader);
+                    }
+                    pw.println(line);
+                    pw.flush();
+                    i++;
+                }
+            }
+            pw.close();
+            br.close();
+
+            if (!oldFile.delete()) {
+                System.out.println("Could not delete file");
+                return;
+            }
+
+            //Rename the new file to the filename the original file had.
+            if (!tempFile.renameTo(oldFile)) System.out.println("Could not rename file");
+
+        } catch (IOException e) {
+            System.out.println("Error!");
         }
-        pw.close();
-        br.close();
-
-        if (!oldFile.delete()) {
-            System.out.println("Could not delete file");
-            return;
-        }
-
-        //Rename the new file to the filename the original file had.
-        if (!tempFile.renameTo(oldFile)) System.out.println("Could not rename file");
-
     }
 
-    private static String getMetricForClassCSVFormat(String className, XMLReader reader) {
+    private String getMetricForClassCSVFormat(String className, XMLReader reader) {
         ProjectClass classElement = reader.getClasses().get(reader.getClasses().indexOf(new ProjectClass(className)));
         ArrayList<Double> metricValues = getMetricValuesForClass(classElement);
         return metricValues.get(0) + "," +
@@ -61,7 +62,7 @@ public class XMLToCSV {
                 metricValues.get(6);
     }
 
-    private static ArrayList<Double> getMetricValuesForClass(ProjectClass classElement) {
+    private ArrayList<Double> getMetricValuesForClass(ProjectClass classElement) {
         ArrayList<Double> list = new ArrayList<>();
         ArrayList<Metric> metrics = classElement.getMetrics();
         if(metrics.indexOf(new Metric("MHF")) == -1) list.add(Double.NaN);
