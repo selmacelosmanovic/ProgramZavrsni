@@ -19,7 +19,6 @@ public class XMLReader {
         XMLParser parser = new XMLParser("C:\\Users\\selma\\jasome\\bla.xml");
         try {
             Node node = parser.getDocumentRootNode();
-            System.out.println(node.getName());
             ArrayList<Node> classesNodes = node.getChildNode("Packages").getChildNode("Package").getChildNode("Classes").getChildNodes("Class");
             for (Node n : classesNodes) {
                 classes.add(createClassElement(n));
@@ -51,5 +50,13 @@ public class XMLReader {
         }
 
         return metricsClass;
+    }
+
+    public ArrayList<ProjectClass> getClasses() {
+        return classes;
+    }
+
+    public void setClasses(ArrayList<ProjectClass> classes) {
+        this.classes = classes;
     }
 }

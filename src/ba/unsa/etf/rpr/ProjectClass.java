@@ -1,6 +1,7 @@
 package ba.unsa.etf.rpr;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class ProjectClass {
     private String name;
@@ -39,5 +40,22 @@ public class ProjectClass {
 
     public void setMetrics(ArrayList<Metric> metrics) {
         this.metrics = metrics;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ProjectClass that = (ProjectClass) o;
+        return name.equals(that.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name);
+    }
+
+    public ProjectClass(String name) {
+        this.name = name;
     }
 }
