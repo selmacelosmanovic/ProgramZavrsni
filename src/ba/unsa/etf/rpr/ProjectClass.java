@@ -9,8 +9,11 @@ public class ProjectClass {
     private ArrayList<Metric> metrics = new ArrayList<>();
 
 
-    public ProjectClass(String name, String path, ArrayList<Metric> metrics) {
-        this.name = name;
+    public ProjectClass(String packageName, String name, String path, ArrayList<Metric> metrics) {
+        name = name.replace('$', '.');
+        if(packageName.equals("default")) packageName = "";
+        else packageName += ".";
+        this.name = packageName + name;
         this.path = path;
         this.metrics = metrics;
     }
@@ -56,6 +59,7 @@ public class ProjectClass {
     }
 
     public ProjectClass(String name) {
+        name = name.replace('$', '.');
         this.name = name;
     }
 }

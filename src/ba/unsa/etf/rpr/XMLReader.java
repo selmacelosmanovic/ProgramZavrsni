@@ -11,25 +11,30 @@ import java.util.ArrayList;
 public class XMLReader {
     private ArrayList<ProjectClass> classes = new ArrayList<>();
 
-    public XMLReader() throws IOException {
-        readXML();
+    public XMLReader(String path) throws IOException {
+        readXML(path);
     }
 
-    public void readXML() throws IOException {
-        XMLParser parser = new XMLParser("C:\\Users\\selma\\jasome\\bla.xml");
+    public void readXML(String path) throws IOException {
+        XMLParser parser = new XMLParser(path + "\\\\" + "jasome.xml");
         try {
             Node node = parser.getDocumentRootNode();
-            ArrayList<Node> classesNodes = node.getChildNode("Packages").getChildNode("Package").getChildNode("Classes").getChildNodes("Class");
-            for (Node n : classesNodes) {
-                classes.add(createClassElement(n));
+            ArrayList<Node> packageNodes = node.getChildNode("Packages").getChildNodes("Package");
+            for (Node pack : packageNodes) {
+                String packageName = pack.getAttributes().get("name");
+                ArrayList<Node> classesNodes = pack.getChildNode("Classes").getChildNodes("Class");
+                for (Node n : classesNodes) {
+                    classes.add(createClassElement(packageName, n));
+                }
             }
+
         } catch (InvalidXMLException e) {
             e.printStackTrace();
         }
     }
 
-    private ProjectClass createClassElement (Node node) {
-        return new ProjectClass(node.getAttributes().get("name"), node.getAttributes().get("sourceFile"), getMetricsForClass(node));
+    private ProjectClass createClassElement(String packageName, Node node) {
+        return new ProjectClass(packageName, node.getAttributes().get("name"), node.getAttributes().get("sourceFile"), getMetricsForClass(node));
     }
 
     private ArrayList<Metric> getMetricsForClass(Node node) {

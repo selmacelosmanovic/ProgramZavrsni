@@ -4,10 +4,10 @@ import java.io.*;
 import java.util.ArrayList;
 
 public class XMLToCSV {
-    public void transform() {     //removes test classes from csv and adds new metrics from xml
+    public void transform(String path) {     //removes test classes from csv and adds new metrics from xml
         try {
-            XMLReader reader = new XMLReader();
-            File oldFile = new File("C:\\Users\\selma\\OneDrive\\Desktop\\classNovi.csv");
+            XMLReader reader = new XMLReader(path);
+            File oldFile = new File(path + "\\\\" + "class.csv");
 
             if (!oldFile.isFile()) {
                 System.out.println("Parameter is not an existing file");
