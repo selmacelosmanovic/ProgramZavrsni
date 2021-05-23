@@ -24,9 +24,13 @@ public class XMLToCSV {
             while ((line = br.readLine()) != null) {
 
                 if (!line.trim().contains("\\test\\") && !line.trim().contains("enum")) {
-                    if (i == 0) {
-                        line += ",mhf,mif,ahf,aif,nmi,noch,six";
-                    } else {
+                    if (i == 0 && line.trim().contains(("cbo,dit,rfc,lcom,mhf,mif,ahf,aif,nmi,noch,six"))) {
+                        return;
+                        //line += ",mhf,mif,ahf,aif,nmi,noch,six";
+                    } else if (i == 0) {
+                        line += ",lcom,mhf,mif,ahf,aif,nmi,noch,six";
+                    }
+                    else {
                         line += "," + getMetricForClassCSVFormat(line.split(",")[1], reader);
                     }
                     pw.println(line);
@@ -59,12 +63,17 @@ public class XMLToCSV {
                 metricValues.get(3) + "," +
                 metricValues.get(4) + "," +
                 metricValues.get(5) + "," +
-                metricValues.get(6);
+                metricValues.get(6) + "," +
+                metricValues.get(7);
     }
 
     private ArrayList<Double> getMetricValuesForClass(ProjectClass classElement) {
         ArrayList<Double> list = new ArrayList<>();
         ArrayList<Metric> metrics = classElement.getMetrics();
+
+        if(metrics.indexOf(new Metric("LCOM*")) == -1) list.add(Double.NaN);
+        else list.add(metrics.get(metrics.indexOf(new Metric("LCOM*"))).getValue());
+
         if(metrics.indexOf(new Metric("MHF")) == -1) list.add(Double.NaN);
         else list.add(metrics.get(metrics.indexOf(new Metric("MHF"))).getValue());
 

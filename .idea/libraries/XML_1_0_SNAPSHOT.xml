@@ -1,7 +1,7 @@
 <component name="libraryTable">
   <library name="XML-1.0-SNAPSHOT">
     <CLASSES>
-      <root url="jar://$USER_HOME$/Downloads/XML-1.0-SNAPSHOT.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../XML-1.0-SNAPSHOT.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

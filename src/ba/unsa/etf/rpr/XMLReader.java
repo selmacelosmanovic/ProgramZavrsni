@@ -3,7 +3,6 @@ package ba.unsa.etf.rpr;
 import com.github.tsijercic1.xml.common.InvalidXMLException;
 import com.github.tsijercic1.xml.common.Node;
 import com.github.tsijercic1.xml.parser.XMLParser;
-import org.w3c.dom.ProcessingInstruction;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -43,7 +42,8 @@ public class XMLReader {
 
         for (Node n : nodeMetrics) {
             String metricName = n.getAttributes().get("name");
-            if(metricName.equals("MHF")
+            if(metricName.equals("LCOM*")
+                    || metricName.equals("MHF")
                     || metricName.equals("AHF")
                     || metricName.equals("AIF")
                     || metricName.equals("MIF")
