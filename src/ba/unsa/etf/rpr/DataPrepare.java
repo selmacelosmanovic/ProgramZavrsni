@@ -28,7 +28,7 @@ public class DataPrepare {
         String [] returnValueTemp = returnValue.split(",");
         returnValue = String.join(",", checkAHFMHFOutlier(content, returnValueTemp));
 
-        if(content.contains("extends Exception")) return "";
+        if(content.contains("extends Exception")) return "";    //exception classes removal
         return returnValue;
     }
 

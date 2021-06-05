@@ -20,7 +20,7 @@ public class XMLToCSV {
             PrintWriter pw = new PrintWriter(new FileWriter(tempFile));
 
             String line;
-            boolean skipline = false;
+            boolean skipline = false;   //sluzi za provjeru treba li izbrisati liniju
             int i = 0;
             while ((line = br.readLine()) != null) {
                 //
@@ -32,7 +32,8 @@ public class XMLToCSV {
                     }
                     else {
                         line += "," + getMetricForClassCSVFormat(line.split(",")[1], reader);
-                        //prepravljanje outliers-a
+
+                        //outlier handling
                         line = DataPrepare.fixOutliers(line);
                         if(line.equals("")) skipline = true;
                     }
