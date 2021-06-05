@@ -20,21 +20,28 @@ public class XMLToCSV {
             PrintWriter pw = new PrintWriter(new FileWriter(tempFile));
 
             String line;
+            boolean skipline = false;
             int i = 0;
             while ((line = br.readLine()) != null) {
-
+                //
                 if (!line.trim().contains("\\test\\") && !line.trim().contains("enum")) {
-                    if (i == 0 && line.trim().contains(("cbo,dit,rfc,lcom,mhf,mif,ahf,aif,nmi,noch,six"))) {
+                    if (i == 0 && line.trim().contains(("cbo,dit,rfc,lcom,mhf,ahf,noch"))) {
                         return;
-                        //line += ",mhf,mif,ahf,aif,nmi,noch,six";
                     } else if (i == 0) {
-                        line += ",lcom,mhf,mif,ahf,aif,nmi,noch,six";
+                        line += ",lcom,mhf,ahf,noch";
                     }
                     else {
                         line += "," + getMetricForClassCSVFormat(line.split(",")[1], reader);
+                        //prepravljanje outliers-a
+                        line = DataPrepare.fixOutliers(line);
+                        if(line.equals("")) skipline = true;
                     }
-                    pw.println(line);
-                    pw.flush();
+                    if(!skipline) {
+                        pw.println(line);
+                        pw.flush();
+                    } else {
+                        skipline = false;
+                    }
                     i++;
                 }
             }
@@ -60,11 +67,7 @@ public class XMLToCSV {
         return metricValues.get(0) + "," +
                 metricValues.get(1) + "," +
                 metricValues.get(2) + "," +
-                metricValues.get(3) + "," +
-                metricValues.get(4) + "," +
-                metricValues.get(5) + "," +
-                metricValues.get(6) + "," +
-                metricValues.get(7);
+                metricValues.get(3) + ",";
     }
 
     private ArrayList<Double> getMetricValuesForClass(ProjectClass classElement) {
@@ -77,23 +80,12 @@ public class XMLToCSV {
         if(metrics.indexOf(new Metric("MHF")) == -1) list.add(Double.NaN);
         else list.add(metrics.get(metrics.indexOf(new Metric("MHF"))).getValue());
 
-        if(metrics.indexOf(new Metric("MIF")) == -1) list.add(Double.NaN);
-        else list.add(metrics.get(metrics.indexOf(new Metric("MIF"))).getValue());
-
         if(metrics.indexOf(new Metric("AHF")) == -1) list.add(Double.NaN);
         else list.add(metrics.get(metrics.indexOf(new Metric("AHF"))).getValue());
-
-        if(metrics.indexOf(new Metric("AIF")) == -1) list.add(Double.NaN);
-        else list.add(metrics.get(metrics.indexOf(new Metric("AIF"))).getValue());
-
-        if(metrics.indexOf(new Metric("NMI")) == -1) list.add(Double.NaN);
-        else list.add(metrics.get(metrics.indexOf(new Metric("NMI"))).getValue());
 
         if(metrics.indexOf(new Metric("NOCh")) == -1) list.add(Double.NaN);
         else list.add(metrics.get(metrics.indexOf(new Metric("NOCh"))).getValue());
 
-        if(metrics.indexOf(new Metric("SIX")) == -1) list.add(Double.NaN);
-        else list.add(metrics.get(metrics.indexOf(new Metric("SIX"))).getValue());
         return list;
     }
 }

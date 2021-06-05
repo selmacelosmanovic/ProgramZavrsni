@@ -1,8 +1,6 @@
 package ba.unsa.etf.rpr;
 
 import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Main {
@@ -19,7 +17,5 @@ public class Main {
             XMLToCSV var = new XMLToCSV();
             var.transform(path + "\\\\" + str);
         }
-       // XMLToCSV var = new XMLToCSV();
-       // var.transform();
     }
 }
