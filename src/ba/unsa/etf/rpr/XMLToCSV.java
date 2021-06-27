@@ -25,7 +25,7 @@ public class XMLToCSV {
             while ((line = br.readLine()) != null) {
                 //
                 if (!line.trim().contains("\\test\\") && !line.trim().contains("enum")) {
-                    if (i == 0 && line.trim().contains(("cbo,dit,rfc,lcom,mhf,ahf,noch"))) {
+                    if (i == 0 && line.trim().contains(("dit,rfc,lcom,mhf,ahf,noch"))) {
                         return;
                     } else if (i == 0) {
                         line += ",lcom,mhf,ahf,noch";
